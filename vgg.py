@@ -28,7 +28,7 @@ class VggNet(nn.module):
         self.vgg_block_5 = self._make_vgg_block(512, 512, num_layers[4])
         self.maxpool_5 = nn.Maxpool2d(stride=2, padding=2)
 
-        self.linear_1 = nn.Linear(512, 4096)
+        self.linear_1 = nn.Linear(512*7*7, 4096)
         self.linear_2 = nn.Linear(4096, 4096)
         self.linear_3 = nn.Linear(4096, 1000)
 
@@ -45,6 +45,7 @@ class VggNet(nn.module):
         x = self.vgg_block_5(x)
         x = self.maxpool_5(x)
 
+        x = x.reshape(x.shape[0], -1)
         x = self.linear_1(x)
         x = self.linear_2(x)
         x = self.linear_3(x)
@@ -67,8 +68,12 @@ def vgg_net():
     VggNet(3, [2, 2, 3, 3, 3])
 
 
+def test():
+    model = VggNet(3, [2, 2, 3, 3, 3])
+    x = torch.rand(1, 3, 224, 224)
+    print(model(x).shape)
 
-
+test()
 
 
 
