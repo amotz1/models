@@ -4,7 +4,7 @@ import torch.nn as nn
 vggs = [64, 64, 'M', 128, 128,'M', 256, 256, 256, 'M', 512, 512, 512, 'M', 512, 512, 512, 'M']
 
 
-class VggNet():
+class VggNet(nn.Module):
     def __init__(self, in_channels=3):
         super(self).__init__()
         self.in_channels = in_channels
@@ -46,5 +46,5 @@ def test():
     x = torch.rand(1, 3, 224, 224)
     print(model(x).shape)
 
-    
+
 test()
