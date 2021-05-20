@@ -9,8 +9,8 @@ class VggNet(nn.Module):
         super(self).__init__()
         self.in_channels = in_channels
         self.conv_block = self._create_convs(vggs)
-        self.fcs = nn.sequential(nn.linear(512*7*7, 4096), nn.Relu(), nn.Dropout(p=0.5),
-                                 nn.linear(4096, 4096), nn.Relu(), nn.Dropouts(p=0.5),
+        self.fcs = nn.sequential(nn.linear(512*7*7, 4096), nn.ReLU(), nn.Dropout(p=0.5),
+                                 nn.linear(4096, 4096), nn.ReLU(), nn.Dropouts(p=0.5),
                                  nn.linear(4096, 1000))
 
     def forward(self, x):
@@ -25,14 +25,14 @@ class VggNet(nn.Module):
         in_channels = self.in_channels
 
         for x in architecture:
-            if type(x) == 'int':
+            if type(x) == int:
                 out_channels = x
                 layers += [nn.Conv2d(in_channels, out_channels=out_channels, kernel_size=3, padding=1),
                            nn.BatchNorm2d(out_channels), nn.Relu()]
 
                 in_channels = x
 
-            elif type(x) == 'str':
+            elif type(x) == str:
                 layers.append(nn.Maxpool2d(kernel_size=2, stride=2))
 
             else:
